@@ -1,15 +1,22 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
 @app.route("/")
 def hello():
-    return "Hello world"
+    return render_template("index.html")
 
-@app.route("/secret")
+
+# use methods as list to limit access. methods if provides acts as a whitelist
+
+@app.route("/secret", methods=["GET"])
 def secret():
-    return "This is the /secret route"
+    return '''
+        <h1>This is the /secret route</h2>
+        <h2>h2</h2>
+        <h3><a href="/">anchor in h3 to root</a></h3>
+    '''
 
 
 # this is not a query
