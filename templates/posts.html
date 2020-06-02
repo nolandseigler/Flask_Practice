@@ -4,6 +4,20 @@
     <title>Posts</title>
 {% endblock %}
 
+<hr>
+<h2>Create New Blog Posts:</h2>
+<form action="/posts" method="POST">
+    <label for="title">Title:</label>
+    <input type="text" name="title" id="title">
+
+    <label for="content">Content:</label>
+    <input type="text" name="content" id="content">
+
+    <label for="author">Author:</label>
+    <input type="text" name="author" id="author">
+</form>
+
+<hr>
 {% block body %} 
     <h1>All Posts</h1>
     {% for post in posts %}
