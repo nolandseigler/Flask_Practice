@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 # Needed to run flask app
@@ -34,17 +34,6 @@ class BlogPost(db.Model):
     def __repr__(self):
         return "Blog post " + str(self.id)
 
-all_posts = [
-    {
-        "title": "Post 1",
-        "content": "This is the content of Post 1.",
-        "author": "Stacy"
-    },
-    {
-        "title": "Post 2",
-        "content": "This is the content of Post 2."
-    }
-]
 
 
 @app.route("/")
@@ -71,9 +60,27 @@ def variable_example(variable, int_variable):
     return "This is the variable " + variable + ". This is the int variable " + str(int_variable)
 
 
-@app.route("/posts", methods=["GET", "POSTS"])
+@app.route("/posts", methods=["GET", "POST"])
 def posts():
-    return render_template("posts.html", posts=all_posts)
+    if request.method == "POST":
+        post_title = request.form["title"]
+        post_content = request.form["content"]
+        # cool ternary blueprint is---- 
+        # condition_if_true if condition else condition_if_false
+        post_author = request.form["author"] if [request.form["author"]] else None
+        new_post = None
+        if post_author:
+            new_post = BlogPost(title=post_title, content=post_content, author=post_author)
+        else:
+            new_post = BlogPost(title=post_title, content=post_content)
+        #adds it temp
+        db.session.add(new_post)
+        #perm save db
+        db.session.commit()
+        return redirect("/posts")
+    else:
+        #you can use BlogPost.query.all() for standard
+        return render_template("posts.html", posts=BlogPost.query.order_by(BlogPost.date_posted).all())
 
 if __name__ == "__main__":
     app.run(debug=True)
