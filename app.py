@@ -2,6 +2,18 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
+all_posts = [
+    {
+        "title": "Post 1",
+        "content": "This is the content of Post 1.",
+        "author": "Stacy"
+    },
+    {
+        "title": "Post 2",
+        "content": "This is the content of Post 2."
+    }
+]
+
 
 @app.route("/")
 def hello():
@@ -26,6 +38,10 @@ def secret():
 def variable_example(variable, int_variable):
     return "This is the variable " + variable + ". This is the int variable " + str(int_variable)
 
+
+@app.route("/posts")
+def posts():
+    return render_template("posts.html", posts=all_posts)
 
 if __name__ == "__main__":
     app.run(debug=True)
