@@ -21,6 +21,7 @@ db = SQLAlchemy(app)
 # You can write data to db in term as well
 # TYPE  db.session.add(BlogPost(title="Blog Post 1", content="Content of blog Post 1.", author="Bobby Saget"))
 
+
 # it makes me cringe to not sep this model out
 
 #Models
